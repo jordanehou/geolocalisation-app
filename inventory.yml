@@ -1,0 +1,6 @@
+[web]
+123.456.66.45
+
+[wes:vars]
+ansible_ssh_private_key_file=~/ansible-key.pem
+ansible_user= ubuntu

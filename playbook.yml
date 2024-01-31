@@ -1,0 +1,74 @@
+---
+- name: Deploy Code with Curl
+  hosts: qu-server
+  become: true  # Run tasks with elevated privileges
+
+  tasks:
+    - name: Download Code with Curl
+      command: >
+        curl -u<USERNAME>:<PASSWORD>
+        -O "http://ec2-16-16-201-32.eu-north-1.compute.amazonaws.com:8081/artifactory/geoapp/{{ TARGET_FILE_PATH }}"
+      args:
+        executable: /bin/bash
+
+
+
+---
+- name: Download Code with Curl and Save to /opt/
+  hosts: qa-server
+  become: true  # Run tasks with elevated privileges
+
+  vars:
+    username: admin
+    password: password
+    target_file_path: bio.jar  # Replace with the actual target file path
+
+  tasks:
+    - name: Download Code with Curl
+      command: >
+        curl -u {{ username }}:{{ password }}
+        -O "http://ec2-16-16-201-32.eu-north-1.compute.amazonaws.com:8081/artifactory/geoapp/{{ target_file_path }}"
+      args:
+        executable: /bin/bash
+
+    - name: Move Downloaded File to /opt/
+      command: mv "{{ target_file_path }}" /opt/
+      shell: cd /opt/ # Change directory to the location where curl downloaded the file
+    
+    - name: Run the Java application
+      command: java -jar {{ target_file_path }}
+
+
+
+
+
+# ---
+# - name: Install Java and Run Java Application
+#   hosts: your_target_servers
+#   become: true  # Run tasks with sudo
+
+#   tasks:
+#     - name: Update apt cache (for Debian/Ubuntu)
+#       apt:
+#         update_cache: yes
+#       when: ansible_os_family == 'Debian'
+
+#     - name: Install OpenJDK 11
+#       apt:
+#         name: openjdk-11-jdk
+#         state: present
+#       when: ansible_os_family == 'Debian'  # Adjust for other package managers
+
+#     - name: Install OpenJDK 11 (for Red Hat/CentOS)
+#       yum:
+#         name: java-11-openjdk
+#         state: present
+#       when: ansible_os_family == 'RedHat'  # Adjust for other package managers
+
+#     - name: Copy YourApp.jar to the server
+#       copy:
+#         src: /path/to/YourApp.jar
+#         dest: /opt/bio.jar
+
+#     - name: Run the Java application
+#       command: java -jar /opt/bio.jar
