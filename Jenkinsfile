@@ -9,8 +9,14 @@ pipeline {
         }
         stage('Run Ansible Playbook') {
             steps {
-                // Run the Ansible playbook
-                sh 'ansible-playbook -i inventory.yml playbook.yml'
+                script {
+                    // Define the path to the Ansible playbook and inventory
+                    def playbookPath = "/home/ec2-user/dev/playbook.yml"
+                    def inventoryPath = "/home/ec2-user/dev/inventory.yml"
+
+                    // Run the Ansible playbook with the specified inventory
+                    sh "ansible-playbook -i ${inventoryPath} ${playbookPath}"
+                }
             }
         }
     }
