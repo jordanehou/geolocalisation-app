@@ -15,7 +15,7 @@ pipeline {
                     def inventoryPath = "/home/ec2-user/dev/inventory.yml"
 
                     // Run the Ansible playbook with the specified inventory
-                    sh "sudo ansible-playbook -i ${inventoryPath} ${playbookPath}"
+                    sh "ansible-playbook -i ${inventoryPath} ${playbookPath}"
                 }
             }
         }
