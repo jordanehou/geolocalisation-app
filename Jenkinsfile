@@ -15,6 +15,7 @@ pipeline {
                     def inventoryPath = "~/dev/inventory.yml"
 
                     // Run the Ansible playbook with the specified inventory
+                    sh'pwd'
                     sh "ansible-playbook playbk.yml -l web"
                 }
             }
