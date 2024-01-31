@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     // Define the path to the Ansible playbook and inventory
-                    def playbookPath = "/home/ec2-user/dev/playbook.yml"
+                    def playbookPath = "/home/ec2-user/dev/playbk.yml"
                     def inventoryPath = "/home/ec2-user/dev/inventory.yml"
 
                     // Run the Ansible playbook with the specified inventory
